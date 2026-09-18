@@ -1,7 +1,7 @@
 const http = require('http');
 const https = require('https');
 const PORT = process.env.PORT || 3000;
-const OPENAI_API_KEY = ' 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 ';
+const OPENAI_API_KEY ='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';
 
 const server = http.createServer((req, res) => {
   if (req.method === 'POST' && req.url === '/ask') {
