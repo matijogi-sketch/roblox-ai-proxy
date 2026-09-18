@@ -1,1 +1,43 @@
-const http = require('http'); const https = require('https'); const PORT = process.env.PORT || 3000; const OPENAI_API_KEY = 'Twój_Klucz_API'; server = http.createServer((req, res) => { if (req.method === 'POST' && req.url === '/ask') { let body = ''; req.on('data', chunk => { body += chunk.toString(); }); req.on('end', () => { const data = JSON.stringify({ model: 'gpt-3.5-turbo', messages: [{ role: 'user', content: body }] }); const options = { hostname: 'api.openai.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': Bearer ${OPENAI_API_KEY} } }; const proxyReq = https.request(options, proxyRes => { let responseData = ''; proxyRes.on('data', chunk => { responseData += chunk; }); proxyRes.on('end', () => { res.writeHead(proxyRes.statusCode, { 'Content-Type': 'application/json' }); res.end(responseData); }); }); proxyReq.write(data); proxyReq.end(); }); } else { res.writeHead(404); res.end(); } })); server.listen(PORT, () => { console.log(\Serwer działa na porcie ${PORT}`);`
+const http = require('http');
+const https = require('https');
+const PORT = process.env.PORT || 3000;
+const OPENAI_API_KEY = ' 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 ';
+
+const server = http.createServer((req, res) => {
+  if (req.method === 'POST' && req.url === '/ask') {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+      const data = JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: body }]
+      });
+      const options = {
+        hostname: 'api.openai.com',
+        path: '/v1/chat/completions',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': Bearer ${OPENAI_API_KEY}
+        }
+      };
+      const proxyReq = https.request(options, proxyRes => {
+        let responseData = '';
+        proxyRes.on('data', chunk => { responseData += chunk; });
+        proxyRes.on('end', () => {
+          res.writeHead(proxyRes.statusCode, { 'Content-Type': 'application/json' });
+          res.end(responseData);
+        });
+      });
+      proxyReq.write(data);
+      proxyReq.end();
+    });
+  } else {
+    res.writeHead(404);
+    res.end();
+  }
+});
+
+server.listen(PORT, () => {
+  console.log(Serwer działa na porcie ${PORT});
+});
